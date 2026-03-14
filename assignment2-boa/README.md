@@ -1,19 +1,21 @@
 # Boa Compiler – Assignment 2
 
 ## Overview
-This folder contains the Week 2 Boa compiler work.
+This folder contains the Week 2 Boa compiler.
 
 Boa extends Adder with:
-- variables
+- identifiers
 - let-bindings
-- binary operators
+- binary operators: +, -, *
 
-## Folder Contents
-- `src/main.rs` — compiler implementation
-- `runtime/start.rs` — runtime
-- `Makefile` — build rules
-- `test/` — test inputs and generated outputs
-- `transcript.txt` — terminal transcript
+## Important Note
+This assignment was started from the Week 1 Adder compiler, then reorganized into its own folder for easier grading.
 
-## Note
-This folder was created from the Week 1 Adder project as the starting point for Week 2.
+## Expected Main Files
+- `src/main.rs`
+- `runtime/start.rs`
+- `Makefile`
+- `test/`
+
+## Status
+This folder is the working area for Assignment 2.
