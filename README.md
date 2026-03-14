@@ -1,48 +1,34 @@
-# Adder Compiler – Assignment 1
+# Compiler Assignments Repository
 
-## Overview
-This project implements a simple compiler for the Adder language.
+This repository contains separate folders for each assignment.
 
-Supported operations:
-- 32-bit integers
-- add1
-- sub1
-- negate
+## Structure
 
-The compiler:
-1. Parses S-expressions
-2. Builds an AST
-3. Generates x86-64 assembly (macho64 on macOS)
-4. Links with a Rust runtime
-5. Produces an executable
+- `assignment1-adder/` — Week 1: Adder
+- `assignment2-boa/` — Week 2: Boa
 
----
+## Grading Notes
 
-## Build Instructions
+### Assignment 1
+Open `assignment1-adder/`
 
-To compile and run a test:
+Key files:
+- `assignment1-adder/src/main.rs`
+- `assignment1-adder/runtime/start.rs`
+- `assignment1-adder/Makefile`
+- `assignment1-adder/test/`
+- `assignment1-adder/transcript.txt`
 
-    make test/01_37.run
-    ./test/01_37.run
+### Assignment 2
+Open `assignment2-boa/`
 
-To regenerate transcript:
-
-    make -B test/01_37.run
-    (see transcript.txt for full demonstration)
-
----
-
-## File Structure
-
-- src/main.rs – Compiler
-- runtime/start.rs – Runtime entry
-- Makefile – Build system
-- test/ – Test programs
-- transcript.txt – Required execution transcript
-
----
+Key files:
+- `assignment2-boa/src/main.rs`
+- `assignment2-boa/runtime/start.rs`
+- `assignment2-boa/Makefile`
+- `assignment2-boa/test/`
+- `assignment2-boa/transcript.txt`
 
 ## Notes
-
-- Assembly target: macho64 (macOS)
-- All tests respect 32-bit signed integer bounds
+The same submitted repository link was used for both assignments.
+To reduce grading friction, each assignment is now organized into its own folder.

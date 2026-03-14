@@ -1,0 +1,127 @@
+===== test/01_37 =====
++ cat test/01_37.snek
+37
+
++ make -B test/01_37.run
+cargo run -- test/01_37.snek test/01_37.s
+nasm -f macho64 test/01_37.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/01_37.run
+
++ cat test/01_37.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 37
+  ret
+
++ ./test/01_37.run
+37
+
+===== test/02_add =====
++ cat test/02_add.snek
+(add1 (add1 5))
+
++ make -B test/02_add.run
+cargo run -- test/02_add.snek test/02_add.s
+nasm -f macho64 test/02_add.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/02_add.run
+
++ cat test/02_add.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 5
+add rax, 1
+add rax, 1
+  ret
+
++ ./test/02_add.run
+7
+
+===== test/03_complex =====
++ cat test/03_complex.snek
+(sub1 (sub1 (add1 73)))
+
++ make -B test/03_complex.run
+cargo run -- test/03_complex.snek test/03_complex.s
+nasm -f macho64 test/03_complex.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/03_complex.run
+
++ cat test/03_complex.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 73
+add rax, 1
+sub rax, 1
+sub rax, 1
+  ret
+
++ ./test/03_complex.run
+72
+
+===== test/04_negate =====
++ cat test/04_negate.snek
+(negate (add1 3))
+
++ make -B test/04_negate.run
+cargo run -- test/04_negate.snek test/04_negate.s
+nasm -f macho64 test/04_negate.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/04_negate.run
+
++ cat test/04_negate.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 3
+add rax, 1
+neg rax
+  ret
+
++ ./test/04_negate.run
+-4
+
+===== test/09_min_i32 =====
++ cat test/09_min_i32.snek
+-2147483648
+
++ make -B test/09_min_i32.run
+cargo run -- test/09_min_i32.snek test/09_min_i32.s
+nasm -f macho64 test/09_min_i32.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/09_min_i32.run
+
++ cat test/09_min_i32.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, -2147483648
+  ret
+
++ ./test/09_min_i32.run
+-2147483648
+
+===== test/10_max_i32 =====
++ cat test/10_max_i32.snek
+2147483647
+
++ make -B test/10_max_i32.run
+cargo run -- test/10_max_i32.snek test/10_max_i32.s
+nasm -f macho64 test/10_max_i32.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/10_max_i32.run
+
++ cat test/10_max_i32.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 2147483647
+  ret
+
++ ./test/10_max_i32.run
+2147483647
+
