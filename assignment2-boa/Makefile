@@ -1,4 +1,4 @@
-# Keep generated assembly files (don't delete them as intermediates)
+# Keep generated assembly files
 .PRECIOUS: test/%.s
 
 test/%.s: test/%.snek src/main.rs
@@ -8,3 +8,11 @@ test/%.run: test/%.s runtime/start.rs
 	nasm -f macho64 test/$*.s -o runtime/our_code.o
 	ar rcs runtime/libour_code.a runtime/our_code.o
 	rustc -L runtime/ runtime/start.rs -o test/$*.run
+
+test: test/simple.run test/add.run test/binop.run test/let_simple.run test/let_multi.run test/nested.run
+	./test/simple.run
+	./test/add.run
+	./test/binop.run
+	./test/let_simple.run
+	./test/let_multi.run
+	./test/nested.run
