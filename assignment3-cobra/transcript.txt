@@ -1,0 +1,155 @@
+===== test/simple =====
++ cat test/simple.snek
+42
+
++ make -B test/simple.run
+cargo run -- test/simple.snek test/simple.s
+nasm -f macho64 test/simple.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/simple.run
+
++ cat test/simple.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 42
+  ret
+
++ ./test/simple.run
+42
+
+===== test/add =====
++ cat test/add.snek
+(add1 (add1 (add1 3)))
+
++ make -B test/add.run
+cargo run -- test/add.snek test/add.s
+nasm -f macho64 test/add.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/add.run
+
++ cat test/add.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 3
+add rax, 1
+add rax, 1
+add rax, 1
+  ret
+
++ ./test/add.run
+6
+
+===== test/binop =====
++ cat test/binop.snek
+(+ (* 2 3) 3)
+
++ make -B test/binop.run
+cargo run -- test/binop.snek test/binop.s
+nasm -f macho64 test/binop.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/binop.run
+
++ cat test/binop.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 2
+mov [rsp - 16], rax
+mov rax, 3
+imul rax, [rsp - 16]
+mov [rsp - 16], rax
+mov rax, 3
+add rax, [rsp - 16]
+  ret
+
++ ./test/binop.run
+9
+
+===== test/let_simple =====
++ cat test/let_simple.snek
+(let ((x 5)) (+ x 1))
+
++ make -B test/let_simple.run
+cargo run -- test/let_simple.snek test/let_simple.s
+nasm -f macho64 test/let_simple.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/let_simple.run
+
++ cat test/let_simple.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 5
+mov [rsp - 16], rax
+mov rax, [rsp - 16]
+mov [rsp - 24], rax
+mov rax, 1
+add rax, [rsp - 24]
+  ret
+
++ ./test/let_simple.run
+6
+
+===== test/let_multi =====
++ cat test/let_multi.snek
+(let ((x 5) (y 10)) (+ x y))
+
++ make -B test/let_multi.run
+cargo run -- test/let_multi.snek test/let_multi.s
+nasm -f macho64 test/let_multi.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/let_multi.run
+
++ cat test/let_multi.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 5
+mov [rsp - 16], rax
+mov rax, 10
+mov [rsp - 24], rax
+mov rax, [rsp - 16]
+mov [rsp - 32], rax
+mov rax, [rsp - 24]
+add rax, [rsp - 32]
+  ret
+
++ ./test/let_multi.run
+15
+
+===== test/nested =====
++ cat test/nested.snek
+(let ((a 1) (b 2))
+  (let ((c (+ a b)))
+    (* c c)))
+
++ make -B test/nested.run
+cargo run -- test/nested.snek test/nested.s
+nasm -f macho64 test/nested.s -o runtime/our_code.o
+ar rcs runtime/libour_code.a runtime/our_code.o
+rustc -L runtime/ runtime/start.rs -o test/nested.run
+
++ cat test/nested.s
+section .text
+global our_code_starts_here
+our_code_starts_here:
+  mov rax, 1
+mov [rsp - 16], rax
+mov rax, 2
+mov [rsp - 24], rax
+mov rax, [rsp - 16]
+mov [rsp - 32], rax
+mov rax, [rsp - 24]
+add rax, [rsp - 32]
+mov [rsp - 32], rax
+mov rax, [rsp - 32]
+mov [rsp - 40], rax
+mov rax, [rsp - 32]
+imul rax, [rsp - 40]
+  ret
+
++ ./test/nested.run
+9
+
